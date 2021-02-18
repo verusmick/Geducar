@@ -11,6 +11,8 @@
 # production
 /build
 
+.eslintcache 
+.vscode
 
 npm-debug.log*
 yarn-debug.log*
