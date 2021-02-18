@@ -4,7 +4,7 @@ import { fetchWithoutToken } from "../utils/fetch";
 export const startLoadUsers = () => {
     return async (dispatch) => {
         try {
-            const resp = await fetchWithoutToken('clients');
+            const resp = await fetchWithoutToken('users');
             const users = await resp.json();
             dispatch(loadUsers(users));
         } catch (error) {
