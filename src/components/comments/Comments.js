@@ -1,52 +1,68 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { cleanComments, startLoadCommentsByPostId } from '../../actions/comments';
 
-export const Comments = () => {
-    const {  postId } = useParams();
-    
+import Modal from 'react-modal';
+
+import { cleanComments } from '../../actions/comments';
+import { uiCloseModal } from '../../actions/ui';
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+    }
+};
+Modal.setAppElement('#root');
+
+export const Comments = ({ modalIsOpen }, { setIsOpen }, props) => {
+
+    const { modalOpen } = useSelector(state => state.ui);
+
     const { comments } = useSelector(state => state.comments);
     const dispatch = useDispatch();
-    
-    useEffect(() => {
-        dispatch(startLoadCommentsByPostId(postId))
-    }, [dispatch, postId])
 
-    useEffect(() => {
+    const closeModal = () => {
+        dispatch(uiCloseModal());
         dispatch(cleanComments())
-    }, [dispatch])
+    }
+
     return (
-        <>
-            <div className="container-lg">
-                <div className="table-responsive">
-                    <div className="table-wrapper">
-                        <div className="table-title">
-                            <div className="row">
-                                <div className="col-sm-8"><h2>Lista de <b>Commets</b></h2></div>
+        <Modal
+            isOpen={modalOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+            className="modal"
+            overlayClassName="modal-fondo"
+        >
+            <div>
+
+                {
+                    comments.map(comment => (
+                        <div>
+                            <div className="card">
+                                <div className="card-header">
+                                    {comment.name}
+                                </div>
+                                <div className="card-body">
+                                    <blockquote className="blockquote mb-0">
+                                        <h5> {comment.body}</h5>
+                                        <footer className="blockquote-footer"> <cite title="Source Title"> {comment.email}</cite></footer>
+                                    </blockquote>
+                                </div>
                             </div>
+                            <br />
                         </div>
-                        <table className="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Comments</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    comments.map(comment => (
-                                        <tr
-                                            key={comment.id}                                        
-                                        >
-                                            <td>{comment.name}</td>
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+
+
+                    ))
+                }
             </div>
-        </>
+
+        </Modal>
     )
 }

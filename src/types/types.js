@@ -1,4 +1,7 @@
 export const types = {
+    uiOpenModal: '[ui] Open modal',
+    uiCloseModal: '[ui] Close modal',
+    
     usersLoad: '[Users] Load Users',
     userSetSelected: '[Users] Set selected',
 

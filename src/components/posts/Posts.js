@@ -1,26 +1,35 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { startLoadCommentsByPostId } from '../../actions/comments';
+
 import { cleanPostsByUser, startLoadPostsByUser } from '../../actions/posts';
+import { uiOpenModal } from '../../actions/ui';
+import { Comments } from '../comments/Comments';
 
 export const Posts = () => {
+
     const { userId } = useParams();
     const { posts } = useSelector(state => state.posts);
     const { selected } = useSelector(state => state.users);
     const dispatch = useDispatch();
-    let history = useHistory();
+
 
     useEffect(() => {
         dispatch(startLoadPostsByUser(userId))
     }, [dispatch, userId])
 
+
     useEffect(() => {
         dispatch(cleanPostsByUser())
     }, [dispatch])
 
-    const handleSelectPost = (post) => {
-        history.push(`/comments/${post.id}`)
+
+    const openModal = (postId) => {
+        dispatch(startLoadCommentsByPostId(postId));
+        dispatch(uiOpenModal());
     }
+
     return (
 
         <div className="container-lg">
@@ -40,11 +49,11 @@ export const Posts = () => {
                                     <div className="card-header"> <b>Titulo:</b> {post.title}</div>
                                     <div className="card-body text-dark">
                                         <h5 className="card-title">{post.body}</h5>
-                                        
+
                                     </div>
                                     <div
                                         className="card-footer text-muted text-center"
-                                        onClick={() => handleSelectPost(post)}>
+                                        onClick={() => openModal(post.id)}>
                                         Ver Comentarios
                                         </div>
                                 </div>
@@ -53,8 +62,7 @@ export const Posts = () => {
                     </div>
                 </div>
             </div>
+            <Comments />
         </div>
-
-
     )
 }
