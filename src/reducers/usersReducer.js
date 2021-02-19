@@ -1,7 +1,8 @@
 import { types } from "../types/types";
 
 const initialState = {
-    users: []    
+    users: [],
+    selected: null
 }
 
 export const usersReducer = (state = initialState, action) => {
@@ -10,7 +11,12 @@ export const usersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 users: [...action.payload]
-            }      
+            }
+        case types.userSetSelected:
+            return {
+                ...state,
+                selected: action.payload
+            }
         default:
             return state;
     }

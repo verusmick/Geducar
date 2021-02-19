@@ -17,6 +17,14 @@
 .ged-card {
     width: 20%;
     margin: 10px;
+    .card-footer {
+        cursor: pointer;
+    }
+}
+
+.ged-card-posts {
+    width: 45%;
+    margin: 10px;
     .card-footer{
         cursor: pointer;
     }

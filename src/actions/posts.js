@@ -20,6 +20,11 @@ export const loadPostsByUser = (posts) => (
     }
 )
 
+export const userSetSelected = (user) => ({
+    type: types.userSetSelected,
+    payload: user
+})
+
 export const cleanPostsByUser = () => (
     {
         type: types.postsClean

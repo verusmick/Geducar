@@ -6,6 +6,7 @@ import { cleanPostsByUser, startLoadPostsByUser } from '../../actions/posts';
 export const Posts = () => {
     const { userId } = useParams();
     const { posts } = useSelector(state => state.posts);
+    const { selected } = useSelector(state => state.users);
     const dispatch = useDispatch();
     let history = useHistory();
 
@@ -17,41 +18,43 @@ export const Posts = () => {
         dispatch(cleanPostsByUser())
     }, [dispatch])
 
-    const handleSelectPost = (post) => {        
+    const handleSelectPost = (post) => {
         history.push(`/comments/${post.id}`)
     }
     return (
-        <>
-            <div className="container-lg">
-                <div className="table-responsive">
-                    <div className="table-wrapper">
-                        <div className="table-title">
-                            <div className="row">
-                                <div className="col-sm-8"><h2>Lista de <b>Posts</b></h2></div>
+
+        <div className="container-lg">
+            <div >
+                <div>
+                    <div>
+                        <div className="row">
+                            <div className="col-sm-8"><h2>
+                                <b>Posts</b> de {selected ? selected.name : localStorage.getItem('userSelected')}</h2>
                             </div>
                         </div>
-                        <table className="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Posts</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    posts.map(post => (
-                                        <tr
-                                            key={post.id}
-                                        onClick={() => handleSelectPost(post)}
-                                        >
-                                            <td>{post.title}</td>
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                        </table>
+                    </div>
+                    <div className="ged-card-container">
+                        {
+                            posts.map(post => (
+                                <div className="card ged-card-posts  border-dark " key={post.id} >
+                                    <div className="card-header"> <b>Titulo:</b> {post.title}</div>
+                                    <div className="card-body text-dark">
+                                        <h5 className="card-title">{post.body}</h5>
+                                        
+                                    </div>
+                                    <div
+                                        className="card-footer text-muted text-center"
+                                        onClick={() => handleSelectPost(post)}>
+                                        Ver Comentarios
+                                        </div>
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
             </div>
-        </>
+        </div>
+
+
     )
 }
