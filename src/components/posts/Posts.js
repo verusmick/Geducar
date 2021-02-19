@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { cleanPostsByUser, startLoadPostsByUser } from '../../actions/posts';
 
 export const Posts = () => {
     const { userId } = useParams();
     const { posts } = useSelector(state => state.posts);
     const dispatch = useDispatch();
+    let history = useHistory();
 
     useEffect(() => {
         dispatch(startLoadPostsByUser(userId))
@@ -15,6 +16,10 @@ export const Posts = () => {
     useEffect(() => {
         dispatch(cleanPostsByUser())
     }, [dispatch])
+
+    const handleSelectPost = (post) => {        
+        history.push(`/comments/${post.id}`)
+    }
     return (
         <>
             <div className="container-lg">
@@ -36,7 +41,7 @@ export const Posts = () => {
                                     posts.map(post => (
                                         <tr
                                             key={post.id}
-                                        // onClick={() => handleSelectUser(user)}
+                                        onClick={() => handleSelectPost(post)}
                                         >
                                             <td>{post.title}</td>
                                         </tr>
