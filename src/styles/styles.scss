@@ -1,1 +1,23 @@
 @import "~bootstrap/scss/bootstrap.scss";
+
+.ged-navTitle {
+    color: #fff;
+    align-self: "flex-end";
+}
+.ged-container {
+    padding: 3%;
+    background-color: #f5f7fa;
+}
+.ged-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ged-card {
+    width: 20%;
+    margin: 10px;
+    .card-footer{
+        cursor: pointer;
+    }
+}
